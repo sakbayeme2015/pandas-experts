@@ -1,0 +1,364 @@
+import pandas as pd 
+import matplotlib.pyplot as plt 
+
+iris = pd.read_csv('iris.csv', index_col=0) 
+
+print(iris.shape) 
+iris.head() 
+iris.plot(x='sepal_length', y='sepal_width', kind='scatter')
+plt.xlabel('sepal length (cm)') 
+plt.ylabel('sepal width (cm)')  
+plt.show() 
+
+iris.plot(y='sepal_length', kind='box') 
+plt.ylabel('sepal width (cm)') 
+plt.show() 
+
+iris.plot(y='sepal_length', kind='hist') 
+plt.xlabel('sepal length (cm)' ) 
+plt.show() 
+
+bins(integer) number of intervals or bins
+range (tuple) extrema of bins (minimum, maximum) 
+
+normed(boolean) whether to normalize to one
+cumulative (boolean) compute Cumulative Distribution
+
+iris.plot(y='sepal_length', kind='hist',cumulative=True, normed=True, bins=30, range=(4,8)) 
+plt.xlabel('sepal length (cm)') 
+
+  
+iris.plot(y='sepal_length', kind='hist', cumulative=True)
+plt.title('Cumulative distribution') 
+plt.show() 
+ 
+pandas line plots
+In the previous chapter, you saw that the .plot() method will place the Index values on the x-axis by default. In this exercise, you'll practice making line plots with specific columns on the x and y axes.
+
+You will work with a dataset consisting of monthly stock prices in 2015 for AAPL, GOOG, and IBM. The stock prices were obtained from Yahoo Finance. Your job is to plot the 'Month' column on the x-axis and the AAPL and IBM prices on the y-axis using a list of column names.
+
+All necessary modules have been imported for you, and the DataFrame is available in the workspace as df. Explore it using methods such as .head(), .info(), and .describe() to see the column names.
+
+
+# Create a list of y-axis column names: y_columns
+y_columns = ['AAPL', 'IBM']
+
+# Generate a line plot
+df.plot(x='Month', y=y_columns)
+
+# Add the title
+plt.title('Monthly stock prices')
+
+# Add the y-axis label
+plt.ylabel('Price ($US)')
+
+# Display the plot
+plt.show()
+
+pandas scatter plots
+Pandas scatter plots are generated using the kind='scatter' keyword argument. Scatter plots require that the x and y columns be chosen by specifying the x and y parameters inside .plot(). Scatter plots also take an s keyword argument to provide the radius of each circle to plot in pixels.
+
+In this exercise, you're going to plot fuel efficiency (miles-per-gallon) versus horse-power for 392 automobiles manufactured from 1970 to 1982 from the UCI Machine Learning Repository.
+
+The size of each circle is provided as a NumPy array called sizes. This array contains the normalized 'weight' of each automobile in the dataset.
+
+All necessary modules have been imported and the DataFrame is available in the workspace as df.
+
+# Generate a scatter plot
+df.plot(kind='scatter', x='hp', y='mpg', s=sizes)
+
+# Add the title
+plt.title('Fuel efficiency vs Horse-power')
+
+# Add the x-axis label
+plt.xlabel('Horse-power')
+
+# Add the y-axis label
+plt.ylabel('Fuel efficiency (mpg)')
+
+# Display the plot
+plt.show() 
+
+pandas box plots
+While pandas can plot multiple columns of data in a single figure, making plots that share the same x and y axes, there are cases where two columns cannot be plotted together because their units do not match. The .plot() method can generate subplots for each column being plotted. Here, each plot will be scaled independently.
+
+In this exercise your job is to generate box plots for fuel efficiency (mpg) and weight from the automobiles data set. To do this in a single figure, you'll specify subplots=True inside .plot() to generate two separate plots.
+
+All necessary modules have been imported and the automobiles dataset is available in the workspace as df.
+
+# Make a list of the column names to be plotted: cols
+cols = ['weight', 'mpg']
+
+# Generate the box plots
+df[cols].plot(kind='box', subplots=True)
+
+# Display the plot
+plt.show()
+
+
+pandas hist, pdf and cdf
+Pandas relies on the .hist() method to not only generate histograms, but also plots of probability density functions (PDFs) and cumulative density functions (CDFs).
+
+In this exercise, you will work with a dataset consisting of restaurant bills that includes the amount customers tipped.
+
+The original dataset is provided by the Seaborn package.
+
+Your job is to plot a PDF and CDF for the fraction column of the tips dataset. This column contains information about what fraction of the total bill is comprised of the tip.
+
+Remember, when plotting the PDF, you need to specify normed=True in your call to .hist(), and when plotting the CDF, you need to specify cumulative=True in addition to normed=True.
+
+All necessary modules have been imported and the tips dataset is available in the workspace as df. Also, some formatting code has been written so that the plots you generate will appear on separate rows.
+
+# This formats the plots such that they appear on separate rows
+fig, axes = plt.subplots(nrows=2, ncols=1)
+
+# Plot the PDF
+df.fraction.plot(ax=axes[0], kind='hist', normed=True, bins=30, range=(0,.3))
+plt.show()
+
+# Plot the CDF
+df.fraction.plot(ax=axes[1], kind='hist', normed=True, cumulative=True, bins=30, range=(0,.3))
+plt.show() 
+
+iris.describe() 
+iris['sepal_length'].count() 
+iris['sepal_width'].count() 
+
+iris[['petal_length', 'petal_width']].count() 
+type(iris[['petal_length', 'petal_width']].count()) 
+
+iris.mean() 
+iris['sepal_length'].mean() 
+
+iris.std() 
+iris.median() 
+
+q = 0.5
+iris.quantile(q) 
+
+q = [0.25, 0.75] 
+iris.quantile(q)  
+
+iris.min()
+iris.max() 
+
+iris.plot(kind = 'box') 
+plt.ylabel('[cm]') 
+plt.show() 
+
+# Print the minimum value of the Engineering column
+print(df['Engineering'].min())
+
+# Print the maximum value of the Engineering column
+print(df['Engineering'].max())
+
+# Construct the mean percentage per year: mean
+mean = df.mean(axis='columns')
+
+# Plot the average percentage per year
+mean.plot()
+
+# Display the plot
+plt.show() 
+
+# Print summary statistics of the fare column with .describe()
+print(df.fare.describe())
+
+# Generate a box plot of the fare column
+df.fare.plot(kind='box')
+
+# Show the plot
+plt.show() 
+
+# Print the mean of the January and March data
+print(january.mean(), march.mean())
+
+# Print the standard deviation of the January and March data
+print(january.std(), march.std()) 
+
+------------------------------------------------------------------------------------------------------------------
+
+>>> import pandas as pd 
+>>> import numpy as np 
+>>> import numpy
+>>> import matplotlib.pyplot as plt 
+>>> iris = pd.read_csv('iris.csv') 
+>>> iris = pd.read_csv('iris.csv', index_col=1)
+>>> iris.head()
+             sepal_length  petal_length  petal_width species
+sepal_width                                                 
+3.5                   5.1           1.4          0.2  setosa
+3.0                   4.9           1.4          0.2  setosa
+3.2                   4.7           1.3          0.2  setosa
+3.1                   4.6           1.5          0.2  setosa
+3.6                   5.0           1.4          0.2  setosa
+>>> iris.shape 
+(150, 4)
+iris.describe() 
+       sepal_length  petal_length  petal_width
+count    150.000000    150.000000   150.000000
+mean       5.843333      3.758000     1.199333
+std        0.828066      1.765298     0.762238
+min        4.300000      1.000000     0.100000
+25%        5.100000      1.600000     0.300000
+50%        5.800000      4.350000     1.300000
+75%        6.400000      5.100000     1.800000
+max        7.900000      6.900000     2.500000
+>>> iris['sepal_length'].count() 
+150
+>>> iris['petal_length'].count() 
+150
+>>> iris['petal_width'].count() 
+150
+>>> iris.mean() 
+sepal_width     3.057333
+petal_length    3.758000
+petal_width     1.199333
+dtype: float64
+>>> iris = pd.read_csv('iris.csv')
+>>> iris.head() 
+   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa
+>>> iris['sepal_length'].mean() 
+5.843333333333334
+>>> iris['sepal_width'].mean() 
+3.0573333333333337
+>>> iris['petal_length'].mean() 
+3.7580000000000005
+>>> iris.mean() 
+sepal_length    5.843333
+sepal_width     3.057333
+petal_length    3.758000
+petal_width     1.199333
+dtype: float64
+>>> iris.std()
+sepal_length    0.828066
+sepal_width     0.435866
+petal_length    1.765298
+petal_width     0.762238
+dtype: float64
+>>> iris.median() 
+sepal_length    5.80
+sepal_width     3.00
+petal_length    4.35
+petal_width     1.30
+dtype: float64
+>>> q = 0.6
+>>> iris.quantile(q) 
+sepal_length    6.10
+sepal_width     3.10
+petal_length    4.64
+petal_width     1.50
+Name: 0.6, dtype: float64
+>>> q = [0.26, 0.80] 
+>>> iris.quantile(q) 
+      sepal_length  sepal_width  petal_length  petal_width
+0.26          5.10          2.8          1.60          0.3
+0.80          6.52          3.4          5.32          1.9
+>>> 
+>>> iris.min() 
+sepal_length       4.3
+sepal_width          2
+petal_length         1
+petal_width        0.1
+species         setosa
+dtype: object
+>>> iris.max() 
+sepal_length          7.9
+sepal_width           4.4
+petal_length          6.9
+petal_width           2.5
+species         virginica
+dtype: object
+>>> iris.plot(kind= 'box') 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7f75ee9551d0>
+>>> plt.ylabel('[cm]')
+<matplotlib.text.Text object at 0x7f75edbdd250>
+>>> plt.show() 
+>>> plt.show() 
+----------------------------------------------------------------------------------------------------------------
+
+>>> import pandas as pd 
+>>> import numpy
+>>> import numpy as np 
+>>> import matplotlib.pyplot as plt 
+>>> iris = pd.read_csv('iris.csv') 
+>>> iris.head() 
+   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa
+>>> iris['species'].describe() 
+>>> iris['species'].unique() 
+array(['setosa', 'versicolor', 'virginica'], dtype=object)
+>>> indices = iris['species'] == 'setosa' 
+>>> setosa = iris.loc[indices,:]
+>>> print(setosa) 
+>>> indices = iris['species'] == 'versicolor'
+>>> versicolor = iris.loc[indices,:] 
+>>> print(versicolor) 
+>>> iris['species'].unique() 
+array(['setosa', 'versicolor', 'virginica'], dtype=object)
+>>> indices = iris['species'] == 'virginica'
+>>> virginica = iris.loc[indices,:] 
+>>> print(virginica) 
+>>> setosa['species'].unique() 
+array(['setosa'], dtype=object)
+>>> versicolor['species'].unique() 
+array(['versicolor'], dtype=object)
+>>> virginica['species'].unique() 
+array(['virginica'], dtype=object)
+>>> setosa.head(5) 
+>>> versicolor.head(8) 
+>>> virginica.head(9) 
+>>> iris.plot(kind = 'hist', bins=50, range=(0,8), alpha=0.6) 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fe400c6e0d0>
+>>> plt.title('Entire iris data set') 
+<matplotlib.text.Text object at 0x7fe400788050>
+>>> plt.xlabel('[cm]') 
+<matplotlib.text.Text object at 0x7fe400c6ea50>
+>>> plt.show() 
+>>> setosa.plot(kind = 'hist', bins=50, range=(0,8), alpha=0.6) 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fe4014f3d10>
+>>> plt.title('setosa data set') 
+<matplotlib.text.Text object at 0x7fe400e3f9d0>
+>>> plt.xlabel('[cm]') 
+<matplotlib.text.Text object at 0x7fe400e938d0>
+>>> versicolor.plot(kind = 'hist', bins=50, range=(0,8), alpha=0.6) 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fe3fd724890>
+>>> plt.title('Versicolor  data set') 
+<matplotlib.text.Text object at 0x7fe3fd6dff90>
+>>> plt.xlabel('[cm]') 
+<matplotlib.text.Text object at 0x7fe3fd7125d0>
+>>> plt.xlabel('[cm]') 
+<matplotlib.text.Text object at 0x7fe3fd7125d0>
+>>> virginica.plot(kind = 'hist', bins=50, range=(0,8), alpha=0.6) 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fe3fd2103d0>
+>>> plt.title('Virginica data set') 
+<matplotlib.text.Text object at 0x7fe3fd1e1f10>
+>>> plt.xlabel('[cm]') 
+<matplotlib.text.Text object at 0x7fe3fd1ae990>
+>>> plt.show() 
+>>> describe_all = iris.describe() 
+>>> print(describe_all) 
+>>> setosa_describe = setosa.describe() 
+>>> print(setosa_describe) 
+>>> versicolor_describe = versicolor.describe() 
+>>> print(versicolor_describe) 
+>>> virginica_describe = virginica.describe() 
+>>> print(virginica_describe) 
+>>> error_setosa = 100 * np.abs(setosa_describe - describe_all) 
+>>> print(error_setosa) 
+>>> error_setosa = 100 * np.abs(versicolor_describe - describe_all) 
+>>> print(error_setosa) 
+>>> error_versicolor = 100 * np.abs(versicolor_describe - describe_all) 
+>>> print(error_versicolor) 
+
+ 
+  

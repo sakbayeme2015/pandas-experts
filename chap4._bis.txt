@@ -1,0 +1,62 @@
+climate2010['2010-05-31 22:00:00'] # datetime 
+climate2010['2010-05-16'] # Entire day
+climate2010['2010-05'] # Entire month 
+climate2010['2010-05':'2010-06'] # 2 months
+
+describe()
+mean()
+count()
+median()
+std() 
+
+climate['2010-07'].plot() 
+plt.title('Temperature july 2010') 
+plt.show() 
+
+climate2010['DewPoint'].plot(kind= 'hist', bins=30) 
+plt.title('Dew Point distribution 2010') 
+plt.show() 
+
+climate2010['Dew Point'].plot(kind='box') 
+plt.title('Dew Point distribution 2010') 
+plt.show() 
+
+climate2010.plot(kind='hist', normed=True, subplots=True)plt.show() 
+
+>>> temperature = pd.read_csv('temperature.csv', parse_dates=True, index_col= 'year') 
+>>> temperature.info()  
+>>> temperature.head(25) 
+>>> temperature.loc['2013'] 
+>>> temperature.loc['2013',  'record_id'] 
+>>> temperature.iloc[0:24, 0:3]  
+>>> temperature.iloc[0:24, 0:3] 
+>>> temperature.iloc[23, 0:6] 
+>>> airport.iloc[300:1000, [0,8]] 
+>>> airport.iloc[:, [0,8]] 
+
+
+>>> titanic = pd.read_csv('titanic.csv',  index_col= 'sex')
+>>> titanic.head() 
+>>> titanic.describe() 
+>>> titanic.info() 
+>>> titanic.loc[:, ['age','embark_town','survived','pclass']].count() 
+>>> titanic.loc[:, ['age','embark_town','survived','pclass']].std() 
+>>> titanic.iloc[0:150, :]
+>>> titanic.loc[:, ['survived', 'alive', 'alone', 'age', 'embark_town']]
+>>> titanic.loc['male', 'age'] 
+
+
+
+ 
+>>> ufo.loc[0, :] rows 0 all columns
+# multiple rows and multiple columns
+>>> ufo.loc[0:2, 'City':'State'] 
+# filter using City=='Oakland'
+>>> ufo[ufo.City=='Oakland']
+>>> ufo.loc[ufo.City=='Oakland', :] 
+>>> ufo.loc[ufo.City=='Oakland', 'State'] 
+>>> ufo[ufo.City=='Oakland'].State 
+
+drinks_url = 'http://bit.ly/drinksbycountry'
+drinks = pd.read_csv(drinks_url, index_col='country') 
+ufo.ix[0:2, 0:2] 

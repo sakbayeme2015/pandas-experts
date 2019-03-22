@@ -1,0 +1,426 @@
+>>> import pandas as pd 
+>>> import numpy as np 
+>>> import numpy
+>>> import matplotlib.pyplot as plt 
+>>> sales = pd.read_csv('sales-feb-2015.csv', parse_dates=True, index_col= 'Date') 
+>>> sales.head() 
+                       Company   Product  Units
+Date                                           
+2015-02-26 08:57:45  Streeplex   Service      4
+2015-02-16 12:09:19      Hooli  Software     10
+2015-02-03 14:14:18    Initech  Software     13
+2015-02-02 08:33:01      Hooli  Software      3
+2015-02-25 00:29:00    Initech   Service     10
+>>> sales.info() 
+<class 'pandas.core.frame.DataFrame'>
+DatetimeIndex: 20 entries, 2015-02-26 08:57:45 to 2015-02-21 20:41:47
+Data columns (total 3 columns):
+Company    20 non-null object
+Product    20 non-null object
+Units      20 non-null int64
+dtypes: int64(1), object(2)
+memory usage: 640.0+ bytes
+>>> sales.index
+DatetimeIndex(['2015-02-26 08:57:45', '2015-02-16 12:09:19',
+               '2015-02-03 14:14:18', '2015-02-02 08:33:01',
+               '2015-02-25 00:29:00', '2015-02-05 01:53:06',
+               '2015-02-09 08:57:30', '2015-02-11 20:03:08',
+               '2015-02-04 21:52:45', '2015-02-09 13:09:55',
+               '2015-02-07 22:58:10', '2015-02-11 22:50:44',
+               '2015-02-26 08:58:51', '2015-02-05 22:05:03',
+               '2015-02-04 15:36:29', '2015-02-19 16:02:58',
+               '2015-02-19 10:59:33', '2015-02-02 20:54:49',
+               '2015-02-21 05:01:26', '2015-02-21 20:41:47'],
+              dtype='datetime64[ns]', name=u'Date', freq=None)
+>>> sales.loc['2015-02-26 08:57:45', 'Company'] 
+Date
+2015-02-26 08:57:45    Streeplex
+Name: Company, dtype: object
+>>> sales.loc['2015-02'] 
+                             Company   Product  Units
+Date                                                 
+2015-02-26 08:57:45        Streeplex   Service      4
+2015-02-16 12:09:19            Hooli  Software     10
+2015-02-03 14:14:18          Initech  Software     13
+2015-02-02 08:33:01            Hooli  Software      3
+2015-02-25 00:29:00          Initech   Service     10
+2015-02-05 01:53:06  Acme Coporation  Software     19
+2015-02-09 08:57:30        Streeplex   Service     19
+2015-02-11 20:03:08          Initech  Software      7
+2015-02-04 21:52:45  Acme Coporation  Hardware     14
+2015-02-09 13:09:55        Mediacore  Software      7
+2015-02-07 22:58:10  Acme Coporation  Hardware      1
+2015-02-11 22:50:44            Hooli  Software      4
+2015-02-26 08:58:51        Streeplex   Service      1
+2015-02-05 22:05:03            Hooli   Service     10
+2015-02-04 15:36:29        Streeplex  Software     13
+2015-02-19 16:02:58        Mediacore   Service     10
+2015-02-19 10:59:33        Mediacore  Hardware     16
+2015-02-02 20:54:49        Mediacore  Hardware      9
+2015-02-21 05:01:26        Mediacore  Software      3
+2015-02-21 20:41:47            Hooli  Hardware      3
+>>> sales.loc['2015-02-26 08:57:45':'2015-02-26 08:58:51'] 
+                       Company  Product  Units
+Date                                          
+2015-02-26 08:57:45  Streeplex  Service      4
+2015-02-26 08:58:51  Streeplex  Service      1
+>>> date_obj = pd.to_datetime(['2015-02-03 14:14:18', '2015-02-05 01:53:06', '2015-02-09 08:57:30'])
+>>> date_obj 
+DatetimeIndex(['2015-02-03 14:14:18', '2015-02-05 01:53:06',
+               '2015-02-09 08:57:30'],
+              dtype='datetime64[ns]', freq=None)
+>>> sales.reindex(date_obj) 
+                             Company   Product  Units
+2015-02-03 14:14:18          Initech  Software     13
+2015-02-05 01:53:06  Acme Coporation  Software     19
+2015-02-09 08:57:30        Streeplex   Service     19
+>>> sales.reindex(date_obj).ffill() 
+                             Company   Product  Units
+2015-02-03 14:14:18          Initech  Software     13
+2015-02-05 01:53:06  Acme Coporation  Software     19
+2015-02-09 08:57:30        Streeplex   Service     19
+>>> sales.reindex(date_obj).bfill() 
+                             Company   Product  Units
+2015-02-03 14:14:18          Initech  Software     13
+2015-02-05 01:53:06  Acme Coporation  Software     19
+2015-02-09 08:57:30        Streeplex   Service     19
+>>> 
+
+-------------------------------------------------------------------------------------------------------------------
+
+Resampling frequencies 
+Input                              Description 
+'min','T'                            minute
+'H'                                  hour 
+'D'                                  day
+'B'                                  business day 
+'W'                                  week 
+'M'                                  month 
+'Q'                                  quarter
+'A'                                  year 
+
+>>> import pandas as pd 
+>>> import numpy 
+>>> import numpy as np 
+>>> import matplotlib.pyplot as plt 
+>>> sales = pd.read_csv('sales-feb-2015.csv', parse_dates=True, index_col= 'Date') 
+>>> sales.head() 
+daily_mean = sales.resample('D').mean() 
+>>> daily_mean
+print(daily_mean.loc['2015-02-02']) 
+Units    6.0
+Name: 2015-02-02 00:00:00, dtype: float64
+>>> print(sales.loc['2015-02-02', 'Units']) 
+Date
+2015-02-02 08:33:01    3
+2015-02-02 20:54:49    9
+Name: Units, dtype: int64
+>>> print(sales.loc['2015-02', 'Units']) 
+Date
+print(sales.loc['2015-02', 'Units']).mean() 
+8.8
+>>> print(sales.loc['2015-02-02', 'Units']).mean() 
+6.0
+>>> sales.resample('D').sum() 
+sales.resample('D').sum().max() 
+Units    29
+dtype: int64
+>>> sales.resample('W').count() 
+            Company  Product  Units
+Date                               
+2015-02-08        8        8      8
+2015-02-15        4        4      4
+2015-02-22        5        5      5
+2015-03-01        3        3      3
+>>> sales.loc[:, 'Units'].resample('2W').sum() 
+ two_days = sales.loc['2015-02-03': '2015-02-05', 'Units'] 
+>>> two_days 
+>>>two_days.resample('4H').ffill() 
+>>>two_days.resample('T').ffill().sum() 
+>>>two_days.resample('5min').sum() 
+
+--------------------------------------------------------------------------------------------------------------
+
+sales = pd.read_csv('sales-feb-2015.csv', parse_date=['Date']) 
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: parser_f() got an unexpected keyword argument 'parse_date'
+>>> sales = pd.read_csv('sales-feb-2015.csv', parse_dates=['Date']) 
+>>> sales.head() 
+                 Date    Company   Product  Units
+0 2015-02-26 08:57:45  Streeplex   Service      4
+1 2015-02-16 12:09:19      Hooli  Software     10
+2 2015-02-03 14:14:18    Initech  Software     13
+3 2015-02-02 08:33:01      Hooli  Software      3
+4 2015-02-25 00:29:00    Initech   Service     10
+>>> sales['Company'].str.upper() 
+0           STREEPLEX
+1               HOOLI
+2             INITECH
+3               HOOLI
+4             INITECH
+5     ACME COPORATION
+6           STREEPLEX
+7             INITECH
+8     ACME COPORATION
+9           MEDIACORE
+10    ACME COPORATION
+11              HOOLI
+12          STREEPLEX
+13              HOOLI
+14          STREEPLEX
+15          MEDIACORE
+16          MEDIACORE
+17          MEDIACORE
+18          MEDIACORE
+19              HOOLI
+Name: Company, dtype: object
+>>> sales['Product'].str.upper() 
+0      SERVICE
+1     SOFTWARE
+2     SOFTWARE
+3     SOFTWARE
+4      SERVICE
+5     SOFTWARE
+6      SERVICE
+7     SOFTWARE
+8     HARDWARE
+9     SOFTWARE
+10    HARDWARE
+11    SOFTWARE
+12     SERVICE
+13     SERVICE
+14    SOFTWARE
+15     SERVICE
+16    HARDWARE
+17    HARDWARE
+18    SOFTWARE
+19    HARDWARE
+Name: Product, dtype: object
+>>> sales['Product'].str.contains('ware') 
+0     False
+1      True
+2      True
+3      True
+4     False
+5      True
+6     False
+7      True
+8      True
+9      True
+10     True
+11     True
+12    False
+13    False
+14     True
+15    False
+16     True
+17     True
+18     True
+19     True
+Name: Product, dtype: bool
+>>> sales['Product'].str.contains('ware').sum() 
+14
+>>> sales['Date'].dt.hour
+0      8
+1     12
+2     14
+3      8
+4      0
+5      1
+6      8
+7     20
+8     21
+9     13
+10    22
+11    22
+12     8
+13    22
+14    15
+15    16
+16    10
+17    20
+18     5
+19    20
+Name: Date, dtype: int64
+>>> central = sales['Date'].dt.tz_localize('US/Central') 
+>>> central
+0    2015-02-26 08:57:45-06:00
+1    2015-02-16 12:09:19-06:00
+2    2015-02-03 14:14:18-06:00
+3    2015-02-02 08:33:01-06:00
+4    2015-02-25 00:29:00-06:00
+5    2015-02-05 01:53:06-06:00
+6    2015-02-09 08:57:30-06:00
+7    2015-02-11 20:03:08-06:00
+8    2015-02-04 21:52:45-06:00
+9    2015-02-09 13:09:55-06:00
+10   2015-02-07 22:58:10-06:00
+11   2015-02-11 22:50:44-06:00
+12   2015-02-26 08:58:51-06:00
+13   2015-02-05 22:05:03-06:00
+14   2015-02-04 15:36:29-06:00
+15   2015-02-19 16:02:58-06:00
+16   2015-02-19 10:59:33-06:00
+17   2015-02-02 20:54:49-06:00
+18   2015-02-21 05:01:26-06:00
+19   2015-02-21 20:41:47-06:00
+Name: Date, dtype: datetime64[ns, US/Central]
+>>> sales['Date'].dt.tz_localize('US/Central').dt.tz_convert('US/Eastern') 
+0    2015-02-26 09:57:45-05:00
+1    2015-02-16 13:09:19-05:00
+2    2015-02-03 15:14:18-05:00
+3    2015-02-02 09:33:01-05:00
+4    2015-02-25 01:29:00-05:00
+5    2015-02-05 02:53:06-05:00
+6    2015-02-09 09:57:30-05:00
+7    2015-02-11 21:03:08-05:00
+8    2015-02-04 22:52:45-05:00
+9    2015-02-09 14:09:55-05:00
+10   2015-02-07 23:58:10-05:00
+11   2015-02-11 23:50:44-05:00
+12   2015-02-26 09:58:51-05:00
+13   2015-02-05 23:05:03-05:00
+14   2015-02-04 16:36:29-05:00
+15   2015-02-19 17:02:58-05:00
+16   2015-02-19 11:59:33-05:00
+17   2015-02-02 21:54:49-05:00
+18   2015-02-21 06:01:26-05:00
+19   2015-02-21 21:41:47-05:00
+Name: Date, dtype: datetime64[ns, US/Eastern]
+>>> 
+----------------------------------------------------------------------------------------------------- 
+
+>>> import pandas as pd 
+>>> import numpy 
+>>> population = pd.read_csv('word_population.csv', parse_dates=True, index_col= 'Date') 
+>>> population 
+            Total Population
+Year                        
+1960-01-01      3.034971e+09
+1970-01-01      3.684823e+09
+1980-01-01      4.436590e+09
+1990-01-01      5.282716e+09
+2000-01-01      6.115974e+09
+2010-01-01      6.924283e+09
+>>> population.resample('A').first() 
+>>> population.resample('A').first().interpolate('linear') 
+>>> population.resample('D').first().interpolate('linear') 
+>>> population.resample('M').first().interpolate('linear') 
+
+-----------------------------------------------------------------------------------------------------------
+
+>>> import pandas as pd 
+>>> import matplotlib.pyplot as plt 
+>>> gpsc = pd.read_csv('gpsc.csv', parse_dates=True, index_col = 'Date') 
+>>> gpsc.tail() 
+                   Open         High          Low        Close    Adj Close      Volume
+Date                                                                                   
+2019-02-25  2804.350098  2813.489990  2794.989990  2796.110107  2796.110107  3804380000
+2019-02-26  2792.360107  2803.120117  2789.469971  2793.899902  2793.899902  3645680000
+2019-02-27  2787.500000  2795.760010  2775.129883  2792.379883  2792.379883  3767130000
+2019-02-28  2788.110107  2793.729980  2782.510010  2784.489990  2784.489990  4396930000
+2019-03-01  2798.219971  2808.020020  2787.379883  2803.689941  2803.689941  3972280000
+>>> gpsc.head() 
+                   Open         High          Low        Close    Adj Close      Volume
+Date                                                                                   
+2018-03-05  2681.060059  2728.090088  2675.750000  2720.939941  2720.939941  3710810000
+2018-03-06  2730.179932  2732.080078  2711.260010  2728.120117  2728.120117  3370690000
+2018-03-07  2710.179932  2730.600098  2701.739990  2726.800049  2726.800049  3393270000
+2018-03-08  2732.750000  2740.449951  2722.649902  2738.969971  2738.969971  3212320000
+2018-03-09  2752.909912  2786.570068  2751.540039  2786.570068  2786.570068  3364100000
+>>> gpsc.info() 
+<class 'pandas.core.frame.DataFrame'>
+DatetimeIndex: 250 entries, 2018-03-05 to 2019-03-01
+Data columns (total 6 columns):
+Open         250 non-null float64
+High         250 non-null float64
+Low          250 non-null float64
+Close        250 non-null float64
+Adj Close    250 non-null float64
+Volume       250 non-null int64
+dtypes: float64(5), int64(1)
+memory usage: 13.7 KB
+>>> gpsc.columns
+Index([u'Open', u'High', u'Low', u'Close', u'Adj Close', u'Volume'], dtype='object')
+>>> gpsc.describe() 
+              Open         High          Low        Close    Adj Close        Volume
+count   250.000000   250.000000   250.000000   250.000000   250.000000  2.500000e+02
+mean   2735.854926  2750.085599  2719.552197  2735.393240  2735.393240  3.585746e+09
+std     106.132938   100.565968   112.192370   106.191369   106.191369  6.427623e+08
+min    2363.120117  2410.340088  2346.580078  2351.100098  2351.100098  1.651650e+09
+25%    2668.420105  2682.990112  2649.640075  2665.304993  2665.304993  3.235260e+09
+50%    2736.179932  2745.180054  2717.984985  2733.955078  2733.955078  3.491040e+09
+75%    2800.152466  2813.107483  2791.134949  2803.417480  2803.417480  3.820915e+09
+max    2936.760010  2940.909912  2927.110107  2930.750000  2930.750000  7.609010e+09
+>>> gpsc.head() 
+                   Open         High          Low        Close    Adj Close      Volume
+Date                                                                                   
+2018-03-05  2681.060059  2728.090088  2675.750000  2720.939941  2720.939941  3710810000
+2018-03-06  2730.179932  2732.080078  2711.260010  2728.120117  2728.120117  3370690000
+2018-03-07  2710.179932  2730.600098  2701.739990  2726.800049  2726.800049  3393270000
+2018-03-08  2732.750000  2740.449951  2722.649902  2738.969971  2738.969971  3212320000
+2018-03-09  2752.909912  2786.570068  2751.540039  2786.570068  2786.570068  3364100000
+>>> gpsc['Close'].plot() 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5aad5e790>
+>>> plt.show() 
+>>> gpsc['Open'].plot()  
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a9f97910>
+>>> plt.show() 
+>>> gspc['Close'].plot() 
+>>> gpsc['Close'].plot() 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5aa69ab10>
+>>> plt.title('gpsc dollars') 
+<matplotlib.text.Text object at 0x7fc5aa62e390>
+>>> plt.ylabel('Closing Price Dollars') 
+<matplotlib.text.Text object at 0x7fc5aa70cb90>
+>>> plt.show() 
+>>> 
+>>> gpsc.loc['2018-03-05':'2018-06-22', 'Close'] 
+>>> gpsc.loc['2018-03-05':'2018-03-12', 'Close'].plot() 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5aa7188d0>
+>>> plt.title('gpsc dollars') 
+<matplotlib.text.Text object at 0x7fc5a9f3ced0>
+>>> plt.ylable('Closing Price') 
+>>> plt.ylabel('Closing Price') 
+<matplotlib.text.Text object at 0x7fc5aa55d710>
+>>> plt.show() 
+>>> gpsc.loc['2018-03', 'Close'].plot(style='k.-', title='gpsc dollars') 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a9f29c90>
+>>> plt.ylabel('Closing Price US Dollars') 
+<matplotlib.text.Text object at 0x7fc5a9ecba90>
+>>> plt.show() 
+>>> gpsc.loc['2018-03-10':'2018-03-17', 'Close'].plot(style='k.-', title='gpsc dollars') 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a75ba590>
+>>> plt.ylabel('Closing Price US Dollars') 
+<matplotlib.text.Text object at 0x7fc5a9ecb310>
+>>> plt.show() 
+
+Color    Marker     Line
+b:blue   a:circle   :doted
+g:green  *:star     -:dashed
+r:red    s:square
+c:cyan   +:plus
+
+>>> gpsc.loc['2019', ['High','Low','Close']] 
+>>> gpsc.loc['2019', ['High','Low','Close']].plot(title='gpsc dollars') 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a9e7c0d0>
+>>> plt.show() 
+
+>>> gpsc.loc['2019', ['High','Low','Close']].plot(title='gpsc dollars') 
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a9e7c0d0>
+>>> plt.show() 
+>>> gpsc.loc['2019-02-01':'2019-02-15', ['High','Low','Close']].plot(subplots=True) 
+array([<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5aa62e910>,
+       <matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a9f79510>,
+       <matplotlib.axes._subplots.AxesSubplot object at 0x7fc5aa5b2210>],
+      dtype=object)
+>>> plt.show() 
+>>> gpsc.loc['2019', ['High','Low','Close']].plot(subplots=True) 
+array([<matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a7495990>,
+       <matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a7421410>,
+       <matplotlib.axes._subplots.AxesSubplot object at 0x7fc5a73a6310>],
+      dtype=object)
+>>> plt.show() 
+
+
