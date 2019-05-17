@@ -1,0 +1,311 @@
+NumPy and pandas working together
+Pandas depends upon and interoperates with NumPy, the Python library for fast numeric array computations. For example, you can use the DataFrame attribute .values to represent a DataFrame df as a NumPy array. You can also pass pandas data structures to NumPy methods. In this exercise, we have imported pandas as pd and loaded world population data every 10 years since 1960 into the DataFrame df. This dataset was derived from the one used in the previous exercise.
+
+Your job is to extract the values and store them in an array using the attribute .values. You'll then use those values as input into the NumPy np.log10() method to compute the base 10 logarithm of the population values. Finally, you will pass the entire pandas DataFrame into the same NumPy np.log10() method and compare the results.
+
+# Import numpy
+import numpy as np
+
+# Create array of DataFrame values: np_vals
+np_vals = df.values
+
+# Create new array of base 10 logarithm values: np_vals_log10
+np_vals_log10 = np.log10(np_vals)
+
+# Create array of new DataFrame by passing df to np.log10(): df_log10
+df_log10 = np.log10(df)
+
+# Print original and new data containers
+[print(x, 'has type', type(eval(x))) for x in ['np_vals', 'np_vals_log10', 'df', 'df_log10']]
+
+data_df = pd.read_json('C:/Users/Alberto/nutrients.json', lines=True) 
+
+# Create URL to JSON file (alternatively this can be a filepath)
+url = 'https://raw.githubusercontent.com/chrisalbon/simulated_datasets/master/data.json'
+
+# Load the first sheet of the JSON file into a data frame
+df = pd.read_json(url, orient='columns')
+
+# View the first ten rows
+df.head(10) 
+
+>>> data = { 'weekday': ['sun', 'sun', 'mon', 'tuesday'], 
+...          'city': ['New-York', 'Dallas', 'California', 'Austin'],
+...          'visitors': [139, 200, 50, 111],
+...          'signups': [139, 200, 50, 111]} 
+>>> 
+>>> users = pd.DataFrame(data) 
+>>> print(users) 
+         city  signups  visitors  weekday
+0    New-York      139       139      sun
+1      Dallas      200       200      sun
+2  California       50        50      mon
+3      Austin      111       111  tuesday
+
+cities = ['New-York', 'Dallas', 'California', 'Austin']
+>>> sigups = [139, 200, 50, 111] 
+>>> visitors = [139, 200, 50, 111] 
+>>> week = ['sun', 'sun', 'mon', 'tuesday']
+>>> list_labels = ['city', 'signups', 'visitors', 'week'] 
+>>> list_cols = [cities, sigups, visitors, week] 
+>>> zipped = list(zip(list_labels, list_cols)) 
+>>> print(zipped) 
+[('city', ['New-York', 'Dallas', 'California', 'Austin']), ('signups', [139, 200, 50, 111]), ('visitors', [139, 200, 50, 111]), ('week', ['sun', 'sun', 'mon', 'tuesday'])]
+>>> data = dict(zipped) 
+>>> users = pd.DataFrame(data) 
+>>> print(users) 
+         city  signups  visitors     week
+0    New-York      139       139      sun
+1      Dallas      200       200      sun
+2  California       50        50      mon
+3      Austin      111       111  tuesday
+
+broadcasting 
+users['fees'] = 0 
+
+city  signups  visitors     week            fees
+0    New-York      139       139      sun     0
+1      Dallas      200       200      sun     0
+2  California       50        50      mon     0
+3      Austin      111       111  tuesday     0
+
+
+xxx = [ 60.1, 66.1, 77.2 ] 
+>>> data = {'vvvv': xxx, 'sex': 'M'} 
+>>> results = pd.DataFrame(data) 
+>>> print(results) 
+  sex  vvvv
+0   M  60.1
+1   M  66.1
+2   M  77.2
+
+>>> results.colums = ['height (in)', 'sex'] 
+__main__:1: UserWarning: Pandas doesn't allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
+>>> results.index = ['A', 'B', 'C'] 
+>>> print(results) 
+  sex  vvvv
+A   M  60.1
+B   M  66.1
+C   M  77.2
+>>> 
+
+# Zip the 2 lists together into one list of (key,value) tuples: zipped
+zipped = list(zip(list_keys,list_values))
+
+# Inspect the list using print()
+print(zipped)
+
+# Build a dictionary with the zipped list: data
+data = dict(zipped)
+
+# Build and inspect a DataFrame from the dictionary: df
+df = pd.DataFrame(data)
+print(df) 
+
+
+
+Labeling your data
+You can use the DataFrame attribute df.columns to view and assign new string labels to columns in a pandas DataFrame.
+
+In this exercise, we have imported pandas as pd and defined a DataFrame df containing top Billboard hits from the 1980s (from Wikipedia). Each row has the year, artist, song name and the number of weeks at the top. However, this DataFrame has the column labels a, b, c, d. Your job is to use the df.columns attribute to re-assign descriptive column labels.
+
+Building DataFrames with broadcasting
+You can implicitly use 'broadcasting', a feature of NumPy, when creating pandas DataFrames. In this exercise, you're going to create a DataFrame of cities in Pennsylvania that contains the city name in one column and the state name in the second. We have imported the names of 15 cities as the list cities.
+
+Your job is to construct a DataFrame from the list of cities and the string 'PA'.
+
+ Make a string with the value 'PA': state
+state = 'PA'
+
+# Construct a dictionary: data
+data = {'state':state, 'city':cities}
+
+# Construct a DataFrame from dictionary data: df
+df = pd.DataFrame(data)
+
+# Print the DataFrame
+print(df) 
+
+print(df)
+   state             city
+0     PA          Manheim
+1     PA     Preston park
+2     PA      Biglerville
+3     PA          Indiana
+4     PA     Curwensville
+5     PA            Crown
+6     PA     Harveys lake
+7     PA  Mineral springs
+8     PA        Cassville
+9     PA       Hannastown
+10    PA        Saltsburg
+11    PA      Tunkhannock
+12    PA       Pittsburgh
+13    PA        Lemasters
+14    PA       Great bend
+
+In [2]: 
+
+import pandas as pd 
+>>> filepath = '/root/python/pandas/tips.csv' 
+>>> info_obj = pd.read_csv(filepath) 
+>>> info_obj.info() 
+>>> cols_names = ['year', 'month', 'day', 'dec_date', 'definite'] 
+>>> info_obj = pd.read_csv(filepath, header=None, names=cols_names) 
+>>> info_obj.iloc[10:20, :]
+>>> info_obj = pd.read_csv(filepath, header=None, names=cols_names, na_values='-1') 
+>>> info_obj.iloc[10:20, :] 
+>>> info_obj = pd.read_csv(filepath, header=None, names=cols_names, na_values={'info_obj':['-1']}, parse_dates=[[0,1,2]]) 
+ 
+Reading a flat file
+In previous exercises, we have preloaded the data for you using the pandas function read_csv(). Now, it's your turn! Your job is to read the World Bank population data you saw earlier into a DataFrame using read_csv(). The file is available in the variable data_file.
+
+The next step is to reread the same file, but simultaneously rename the columns using the names keyword input parameter, set equal to a list of new column labels. You will also need to set header=0 to rename the column labels.
+
+Finish up by inspecting the result with df.head() and df.info() in the IPython Shell (changing df to the name of your DataFrame variable).
+
+pandas has already been imported and is available in the workspace as pd.
+
+# Read in the file: df1
+df1 = pd.read_csv(data_file)
+
+# Create a list of the new column labels: new_labels
+new_labels = ['year', 'population']
+
+# Read in the file, specifying the header and names parameters: df2
+df2 = pd.read_csv(data_file, header=0, names=new_labels)
+
+# Print both the DataFrames
+print(df1)
+print(df2) 
+
+Year  Total Population
+0  1960      3.034971e+09
+1  1970      3.684823e+09
+2  1980      4.436590e+09
+3  1990      5.282716e+09
+4  2000      6.115974e+09
+5  2010      6.924283e+09
+   year    population
+0  1960  3.034971e+09
+1  1970  3.684823e+09
+2  1980  4.436590e+09
+3  1990  5.282716e+09
+4  2000  6.115974e+09
+5  2010  6.924283e+09
+
+In [2]: 
+
+Delimiters, headers, and extensions
+Not all data files are clean and tidy. Pandas provides methods for reading those not-so-perfect data files that you encounter far too often.
+
+In this exercise, you have monthly stock data for four companies downloaded from Yahoo Finance. The data is stored as one row for each company and each column is the end-of-month closing price. The file name is given to you in the variable file_messy.
+
+In addition, this file has three aspects that may cause trouble for lesser tools: multiple header lines, comment records (rows) interleaved throughout the data rows, and space delimiters instead of commas.
+
+Your job is to use pandas to read the data from this problematic file_messy using non-default input options with read_csv() so as to tidy up the mess at read time. Then, write the cleaned up data to a CSV file with the variable file_clean that has been prepared for you, as you might do in a real data workflow.
+
+You can learn about the option input parameters needed by using help() on the pandas function pd.read_csv().
+
+# Read the raw file as-is: df1
+df1 = pd.read_csv(file_messy)
+
+# Print the output of df1.head()
+print(df1.head())
+
+# Read in the file with the correct parameters: df2
+df2 = pd.read_csv(file_messy, delimiter=' ', header=3, comment="#")
+
+# Print the output of df2.head()
+print(df2.head())
+
+# Save the cleaned up DataFrame to a CSV file without the index
+df2.to_csv(file_clean, index=False)
+
+# Save the cleaned up DataFrame to an Excel file without the index
+df2.to_excel('file_clean.xlsx', index=False) 
+
+
+import numpy 
+import pandas as pd 
+import matplotlib.pyplot as plt 
+
+aapl = pd.read.csv('aapl.csv', index_col='date', parse_dates=True) 
+aapl.head(6) 
+
+close_arr = aapl['Close'].values 
+type(close_arr) 
+numpy.ndarray 
+
+plt.plot(close_arr) 
+plt.show() 
+
+close_series = aapl['Close'] 
+type(close_series) 
+
+plt.plot(close_series) 
+plt.show() 
+
+close_series.plot() 
+plt.show()
+
+PLotting DataFrame
+aapl.plot() 
+plt.show() 
+
+plt.plot(aapl) 
+plt.show() 
+
+appl.plot() 
+plt.yscale('log') 
+plt.show() 
+
+aapl['Open'].plot(color='b', style='.', legend=True) 
+aapl['Close'].plot(color='r', style='.', legend=True) 
+
+plt.axis(('2001','2002', 0, 100)) 
+plt.show(aapl) 
+
+aapl.loc['2001':'2004',['Open', 'Close', 'High', 'Low']].plot() 
+plt.savefig('aapl.png') 
+plt.savefig('aapl.jpg')
+plt.savefig('aapl.pdf') 
+plt.show() 
+
+
+
+# Create a plot with color='red'
+df.plot(color='red')
+
+# Add a title
+plt.title('Temperature in Austin')
+
+# Specify the x-axis label
+plt.xlabel('Hours since midnight August 1, 2010')
+
+# Specify the y-axis label
+plt.ylabel('Temperature (degrees F)')
+
+# Display the plot
+plt.show() 
+
+
+# Plot all columns (default)
+df.plot()
+plt.show()
+
+# Plot all columns as subplots
+df.plot(subplots=True)
+plt.show()
+
+# Plot just the Dew Point data
+column_list1 = ['Dew Point (deg F)']
+df[column_list1].plot()
+plt.show()
+
+# Plot the Dew Point and Temperature data, but not the Pressure data
+column_list2 = ['Temperature (deg F)','Dew Point (deg F)']
+df[column_list2].plot()
+plt.show() 
+
+ 
